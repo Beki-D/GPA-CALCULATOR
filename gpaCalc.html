@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./assets/bootstrap.min.css" rel="stylesheet">
+    <title>GPA Calculator</title>
+</head>
+<body>
+    <div class="header">
+        <h1 id="title">GPA Table</h1>
+    </div>
+    <div class="main-table">
+      <table class="table table-dark table-borderless">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Courses</th>
+          <th scope="col">Grade</th>
+          <th scope="col">Credits</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Calculus</td>
+          <td class="grade">A+</td>
+          <td class="credit">4</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Physics</td>
+          <td class="grade">A</td>
+          <td class="credit">3</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Electronics</td>
+          <td class="grade">B+</td>
+          <td class="credit">3</td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>Algorithm Design</td>
+          <td class="grade">A-</td>
+          <td class="credit">4</td>
+        </tr>
+        <tr>
+          <th scope="row">5</th>
+          <td>Probability</td>
+          <td class="grade">B-</td>
+          <td class="credit">2</td>
+        </tr>
+        <tr>
+          <th scope="row">6</th>
+          <td>Operating System</td>
+          <td class="grade">C+</td>
+          <td class="credit">2</td>
+        </tr>
+        <tr>
+          <th></th>
+          <td>Total</td>
+          <td id="grade-total"></td>
+          <td id="credit-total"></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td>GPA</td>
+          <td></td>
+          <td id="gpa" style="border: 2px solid;"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+</body>
+<script>
+  calculate()
+  function calculate(){
+    var scale = {"A+": 4.0, "A": 4.0, "A-": 3.75, "B+": 3.5, "B": 3.0, "B-": 2.75, "C+": 2.5, "C": 2, "C-": 1.75, "D": 1.5, "F": 0};
+    
+    //Output variables
+    var totalCrdtDisplay = document.getElementById("credit-total");
+    var totalGrdDisplay = document.getElementById("grade-total");
+    var gpaDisplay = document.getElementById("gpa");
+    
+    //Input variables
+    var grd = document.getElementsByClassName("grade");
+    var crdt = document.getElementsByClassName("credit");
+    var inputLength = grd.length; 
+    var grdList = [inputLength], crdtList = [inputLength], scaledList = [inputLength];
+    var totalCrdt = 0, totalScaled = 0, avgGrd;
+    let i;
+    for(i=0; i<inputLength; i++){
+      grdList[i] = grd[i].textContent;
+      scaledList[i] = scale[grdList[i]];
+      console.log(grdList[i]+" : "+scale[grdList[i]]);
+    }
+    
+    for(i=0; i<inputLength; i++){
+      crdtList[i] = parseInt(crdt[i].textContent);
+      totalCrdt += crdtList[i];
+    }
+  
+    for(i=0; i<inputLength; i++){
+      totalScaled += scaledList[i] * crdtList[i];
+    }
+    
+    let gpa = (totalScaled / totalCrdt).toFixed(2);
+    
+    //Using gpa to calculate estimated average grade
+    if(gpa >= 3.90){
+      avgGrd = "A+";
+    }else if(gpa >= 3.80 && gpa < 3.90){
+      avgGrd = "A";
+    }else if(gpa >= 3.70 && gpa < 3.80){
+      avgGrd = "A-";
+    }else if(gpa >= 3.40 && gpa < 3.70){
+      avgGrd = "B+";
+    }else if(gpa >= 2.90 && gpa < 3.40){
+      avgGrd = "B";
+    }else if(gpa >= 2.70 && gpa < 2.90){
+      avgGrd = "B-";
+    }else if(gpa >= 2.30 && gpa < 2.70){
+      avgGrd = "C+";
+    }else if(gpa >= 1.80 && gpa < 2.30){
+      avgGrd = "C";
+    }else if(gpa >= 1.70 && gpa < 1.80){
+      avgGrd = "C-";
+    }else if(gpa >= 1.50 && gpa < 1.70){
+      avgGrd = "D";
+    }else avgGrd = "F";
+
+    //DOMing the results
+    totalCrdtDisplay.innerText = totalCrdt;
+    totalGrdDisplay.innerText = avgGrd;
+    gpaDisplay.innerText = gpa;
+    
+    //Styling the results
+    totalCrdtDisplay.style.color = totalGrdDisplay.style.color = gpaDisplay.style.color = 'aqua';
+    gpaDisplay.style.fontWeight = 600;
+  }
+</script>
+
+</html>

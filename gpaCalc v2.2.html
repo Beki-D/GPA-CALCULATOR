@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./assets/bootstrap.min.css" rel="stylesheet">
+    <title>GPA Calculator</title>
+    <style>
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .main-table {
+      max-width: 395px;
+    }
+
+    select {
+      box-shadow: 100px 10px 25px rgba(red, green, blue, alpha);
+      font-size: 1.5rem;
+      padding: 0.2em 0.3em;
+      background: darkslategray;
+      color: white;
+      /*appearance: none;*/
+      border: 0;
+    }
+  
+    .custom-select {
+      position: relative;
+    }
+  
+    .custom-arrow {
+      position: absolute;
+      display: block;
+      background: rgb(35, 60, 60);
+      height: 100%;
+      width: 1.3rem;  
+      top: 0;
+      right: 0;
+      pointer-events: none;
+    }
+  
+    .custom-arrow::after, .custom-arrow::before {
+      --size: 0.5em;
+      
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+    
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  
+    .custom-arrow::before {
+      border-left: var(--size) solid transparent;
+      border-right: var(--size) solid transparent;
+      border-top: var(--size) solid rgba(255, 255, 255, 0.5);
+      
+      top: 65%;
+    }
+  
+    .custom-arrow::after {
+      border-left: var(--size) solid transparent;
+      border-right: var(--size) solid transparent;
+      border-bottom: var(--size) solid rgba(255, 255, 255, 0.5);
+    
+      top: 35%;
+    }
+  
+    .select-wrapper {
+      background-color: #343434;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+  
+    #select-cover {
+      position: absolute;
+      display: block;
+      top: 0%;
+      left: 100%;
+      background-color: aqua;
+      border-radius: 0%;
+    }
+
+    input {
+      max-width: 6em;
+      border: none;
+      background-color: darkslategray;
+      color: white;
+      padding: 8px 0 8px 12px;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="title">GPA Table</h1>
+    </div>
+    <div class="main-table">
+      <table class="table table-dark table-borderless">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Courses</th>
+          <th scope="col">Grade</th>
+          <th scope="col">Credits</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Calculus</td>
+          <td class="grade">
+            <div class="custom-select">
+              <select onchange="calculate()" id="select">
+                <option value="4">A+</option>
+                <option value="4">A</option>
+                <option value="3.75">A-</option>
+                <option value="3.5">B+</option>
+                <option value="3">B</option>
+                <option value="2.75">B-</option>
+                <option value="2.5">C+</option>
+                <option value="2">C</option>
+                <option value="1.75">C-</option>
+                <option value="1">D</option>
+                <option value="0">F</option>
+              </select>
+              <span class="custom-arrow"></span>
+            </div>  
+          </td>
+          <td class="credit">
+            <input id="score" placeholder="credit" oninput="calculate()"></input>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Physics</td>
+          <td class="grade">
+            <div class="custom-select">
+              <select onchange="calculate()" id="select">
+                <option value="4">A+</option>
+                <option value="4">A</option>
+                <option value="3.75">A-</option>
+                <option value="3.5">B+</option>
+                <option value="3">B</option>
+                <option value="2.75">B-</option>
+                <option value="2.5">C+</option>
+                <option value="2">C</option>
+                <option value="1.75">C-</option>
+                <option value="1">D</option>
+                <option value="0">F</option>
+              </select>
+              <span class="custom-arrow"></span>
+            </div>  
+          </td>
+          <td class="credit">
+            <input id="score" placeholder="credit" oninput="calculate()"></input>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Electronics</td>
+          <td class="grade">
+            <div class="custom-select">
+              <select onchange="calculate()" id="select">
+                <option value="4">A+</option>
+                <option value="4">A</option>
+                <option value="3.75">A-</option>
+                <option value="3.5">B+</option>
+                <option value="3">B</option>
+                <option value="2.75">B-</option>
+                <option value="2.5">C+</option>
+                <option value="2">C</option>
+                <option value="1.75">C-</option>
+                <option value="1">D</option>
+                <option value="0">F</option>
+              </select>
+              <span class="custom-arrow"></span>
+            </div>  
+          </td>
+          <td class="credit">
+            <input id="score" placeholder="credit" oninput="calculate()"></input>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>Algorithm Design</td>
+          <td class="grade">
+            <div class="custom-select">
+              <select onchange="calculate()" id="select">
+                <option value="4">A+</option>
+                <option value="4">A</option>
+                <option value="3.75">A-</option>
+                <option value="3.5">B+</option>
+                <option value="3">B</option>
+                <option value="2.75">B-</option>
+                <option value="2.5">C+</option>
+                <option value="2">C</option>
+                <option value="1.75">C-</option>
+                <option value="1">D</option>
+                <option value="0">F</option>
+              </select>
+              <span class="custom-arrow"></span>
+            </div>  
+          </td>
+          <td class="credit">
+            <input id="score" placeholder="credit" oninput="calculate()"></input>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">5</th>
+          <td>Probability</td>
+          <td class="grade">
+            <div class="custom-select">
+              <select onchange="calculate()" id="select">
+                <option value="4">A+</option>
+                <option value="4">A</option>
+                <option value="3.75">A-</option>
+                <option value="3.5">B+</option>
+                <option value="3">B</option>
+                <option value="2.75">B-</option>
+                <option value="2.5">C+</option>
+                <option value="2">C</option>
+                <option value="1.75">C-</option>
+                <option value="1">D</option>
+                <option value="0">F</option>
+              </select>
+              <span class="custom-arrow"></span>
+            </div>  
+          </td>
+          <td class="credit">
+            <input id="score" placeholder="credit" oninput="calculate()"></input>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">6</th>
+          <td>Operating System</td>
+          <td class="grade">
+          <div class="custom-select">
+            <select onchange="calculate()" id="select">
+              <option value="4">A+</option>
+              <option value="4">A</option>
+              <option value="3.75">A-</option>
+              <option value="3.5">B+</option>
+              <option value="3">B</option>
+              <option value="2.75">B-</option>
+              <option value="2.5">C+</option>
+              <option value="2">C</option>
+              <option value="1.75">C-</option>
+              <option value="1">D</option>
+              <option value="0">F</option>
+            </select>
+            <span class="custom-arrow"></span>
+          </div>
+        </td>
+          <td class="credit">
+            <input id="score" placeholder="credit" oninput="calculate()"></input>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td>Total</td>
+          <td id="grade-total"></td>
+          <td id="credit-total"></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td>GPA</td>
+          <td></td>
+          <td id="gpa" style="border: 2px solid;"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+</body>
+<script>
+  calculate()
+  function calculate(){
+    var scale = {"A+": 4.0, "A": 4.0, "A-": 3.75, "B+": 3.5, "B": 3.0, "B-": 2.75, "C+": 2.5, "C": 2, "C-": 1.75, "D": 1.5, "F": 0};
+    
+    //Output variables
+    var totalCrdtDisplay = document.getElementById("credit-total");
+    var totalGrdDisplay = document.getElementById("grade-total");
+    var gpaDisplay = document.getElementById("gpa");
+    
+    //Input variables
+    var grd = document.getElementsByTagName('select');
+    var crdt = document.getElementsByClassName("credit");
+    var inputLength = grd.length; 
+    var grdList = [inputLength], crdtList = [inputLength], scaledList = [inputLength];
+    var totalCrdt = 0, totalScaled = 0, avgGrd;
+    let i;
+    for(i=0; i<inputLength; i++){
+      grdList[i] = parseFloat(grd[i].value);
+    }
+    console.log(grdList);
+
+    for(i=0; i<inputLength; i++){
+      crdtList[i] = parseInt(crdt[i].firstElementChild.value);
+      totalCrdt += crdtList[i];
+    }
+  
+    for(i=0; i<inputLength; i++){
+      totalScaled += grdList[i] * crdtList[i];
+    }
+    
+    let gpa = (totalScaled / totalCrdt).toFixed(2);
+    
+    //Using gpa to calculate estimated average grade
+    if(gpa >= 3.90){
+      avgGrd = "A+";
+    }else if(gpa >= 3.80 && gpa < 3.90){
+      avgGrd = "A";
+    }else if(gpa >= 3.70 && gpa < 3.80){
+      avgGrd = "A-";
+    }else if(gpa >= 3.40 && gpa < 3.70){
+      avgGrd = "B+";
+    }else if(gpa >= 2.90 && gpa < 3.40){
+      avgGrd = "B";
+    }else if(gpa >= 2.70 && gpa < 2.90){
+      avgGrd = "B-";
+    }else if(gpa >= 2.30 && gpa < 2.70){
+      avgGrd = "C+";
+    }else if(gpa >= 1.80 && gpa < 2.30){
+      avgGrd = "C";
+    }else if(gpa >= 1.70 && gpa < 1.80){
+      avgGrd = "C-";
+    }else if(gpa >= 1.50 && gpa < 1.70){
+      avgGrd = "D";
+    }else avgGrd = "F";
+
+    //DOMing the results
+    totalCrdtDisplay.innerText = totalCrdt;
+    totalGrdDisplay.innerText = avgGrd;
+    gpaDisplay.innerText = gpa;
+    
+    //Styling the results
+    totalCrdtDisplay.style.color = totalGrdDisplay.style.color = gpaDisplay.style.color = 'aqua';
+    gpaDisplay.style.fontWeight = 600;
+  }
+</script>
+
+</html>
