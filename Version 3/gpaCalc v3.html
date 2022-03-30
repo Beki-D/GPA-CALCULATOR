@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./assets/bootstrap.min.css" rel="stylesheet">
+    <title>GPA Calculator</title>
+    <style>
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, darkslategray, rgb(75, 124, 124));
+      }
+
+      .header {
+        color: white;
+      }
+
+      .main-table {
+        max-width: 395px;
+      }
+
+      select {
+        box-shadow: 100px 10px 25px rgba(red, green, blue, alpha);
+        font-size: 1.5rem;
+        padding: 0.2em 0.3em;
+        background: darkslategray;
+        color: white;
+        /*appearance: none;*/
+        border: 0;
+      }
+    
+      .custom-select {
+        position: relative;
+      }
+    
+      .custom-arrow {
+        position: absolute;
+        display: block;
+        background: rgb(35, 60, 60);
+        height: 100%;
+        width: 1.3rem;
+        top: 0;
+        right: 0;
+        pointer-events: none;
+      }
+    
+      .custom-arrow::after, .custom-arrow::before {
+        --size: 0.5em;
+
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+      
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    
+      .custom-arrow::before {
+        border-left: var(--size) solid transparent;
+        border-right: var(--size) solid transparent;
+        border-top: var(--size) solid rgba(255, 255, 255, 0.5);
+
+        top: 65%;
+      }
+    
+      .custom-arrow::after {
+        border-left: var(--size) solid transparent;
+        border-right: var(--size) solid transparent;
+        border-bottom: var(--size) solid rgba(255, 255, 255, 0.5);
+      
+        top: 35%;
+      }
+    
+      .select-wrapper {
+        background-color: #343434;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+      }
+    
+      #select-cover {
+        position: absolute;
+        display: block;
+        top: 0%;
+        left: 100%;
+        background-color: aqua;
+        border-radius: 0%;
+      }
+
+      input {
+        border: none;
+        background-color: darkslategray;
+        color: white;
+        padding: 8px;
+      }
+
+      .main-table input {
+        max-width: 4em;
+      }
+
+      .input-area {
+        display: flex;
+        width: 394px;
+        padding: 10px;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        background-color: #212529;
+      }
+  </style>
+</head>
+<body>
+  <div class="header">
+      <h1 id="title">GPA Calculator</h1>
+  </div>
+  <div class="input-area">
+      <input type="text" id="course-name" placeholder="course name" style="width: 150px;"/>
+      <div class="custom-select">
+        <select onchange="calculate()" id="grade-input">
+          <option value="4">A+</option>
+          <option value="4">A</option>
+          <option value="3.75">A-</option>
+          <option value="3.5">B+</option>
+          <option value="3">B</option>
+          <option value="2.75">B-</option>
+          <option value="2.5">C+</option>
+          <option value="2">C</option>
+          <option value="1.75">C-</option>
+          <option value="1">D</option>
+          <option value="0">F</option>
+        </select>
+        <span class="custom-arrow"></span>
+      </div>
+      <input type="text" placeholder="credits" id="credit-input" style="width: 65px;"/>
+      <button class="btn btn-success" onclick="addEntry()"><i>
+        <svg class="add-btn" height="20" width="20">
+          <line x1="2" y1="10" x2="18" y2="10" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+          <line x1="10" y1="2" x2="10" y2="18" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+        </svg>
+      </i>
+      </button>
+  </div>
+  <div class="main-table">
+    <table class="table table-dark table-borderless">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Courses</th>
+        <th scope="col">Grade</th>
+        <th scope="col">Credits</th>
+        <th style="text-align: center;">X</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Calculus</td>
+        <td class="grade">
+          <div class="custom-select">
+            <select onchange="calculate()" id="select"  class="custom-select input" >
+              <option value="4">A+</option>
+              <option value="4">A</option>
+              <option value="3.75">A-</option>
+              <option value="3.5">B+</option>
+              <option value="3">B</option>
+              <option value="2.75">B-</option>
+              <option value="2.5">C+</option>
+              <option value="2">C</option>
+              <option value="1.75">C-</option>
+              <option value="1">D</option>
+              <option value="0">F</option>
+            </select>
+            <span class="custom-arrow"></span>
+          </div>  
+        </td>
+        <td class="credit">
+          <input id="score" placeholder="credit" oninput="calculate()"></input>
+        </td>
+        <td class="close-btn">
+          <button class="btn btn-danger"><i>
+            <svg height="20" width="20">
+              <line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+              <line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+            </svg>
+          </i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Physics</td>
+        <td class="grade">
+          <div class="custom-select">
+            <select onchange="calculate()" id="select" class="custom-select input">
+              <option value="4">A+</option>
+              <option value="4">A</option>
+              <option value="3.75">A-</option>
+              <option value="3.5">B+</option>
+              <option value="3">B</option>
+              <option value="2.75">B-</option>
+              <option value="2.5">C+</option>
+              <option value="2">C</option>
+              <option value="1.75">C-</option>
+              <option value="1">D</option>
+              <option value="0">F</option>
+            </select>
+            <span class="custom-arrow"></span>
+          </div>  
+        </td>
+        <td class="credit">
+          <input id="score" placeholder="credit" oninput="calculate()"></input>
+        </td>
+        <td class="close-btn">
+          <button class="btn btn-danger"><i>
+            <svg height="20" width="20">
+              <line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+              <line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+            </svg>
+          </i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Electronics</td>
+        <td class="grade">
+          <div class="custom-select">
+            <select onchange="calculate()" id="select" class="custom-select input">
+              <option value="4">A+</option>
+              <option value="4">A</option>
+              <option value="3.75">A-</option>
+              <option value="3.5">B+</option>
+              <option value="3">B</option>
+              <option value="2.75">B-</option>
+              <option value="2.5">C+</option>
+              <option value="2">C</option>
+              <option value="1.75">C-</option>
+              <option value="1">D</option>
+              <option value="0">F</option>
+            </select>
+            <span class="custom-arrow"></span>
+          </div>  
+        </td>
+        <td class="credit">
+          <input id="score" placeholder="credit" oninput="calculate()"></input>
+        </td>
+        <td class="close-btn">
+          <button class="btn btn-danger"><i>
+            <svg height="20" width="20">
+              <line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+              <line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+            </svg>
+          </i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>Algorithm Design</td>
+        <td class="grade">
+          <div class="custom-select">
+            <select onchange="calculate()" id="select" class="custom-select input">
+              <option value="4">A+</option>
+              <option value="4">A</option>
+              <option value="3.75">A-</option>
+              <option value="3.5">B+</option>
+              <option value="3">B</option>
+              <option value="2.75">B-</option>
+              <option value="2.5">C+</option>
+              <option value="2">C</option>
+              <option value="1.75">C-</option>
+              <option value="1">D</option>
+              <option value="0">F</option>
+            </select>
+            <span class="custom-arrow"></span>
+          </div>  
+        </td>
+        <td class="credit">
+          <input id="score" placeholder="credit" oninput="calculate()"></input>
+        </td>
+        <td class="close-btn">
+          <button class="btn btn-danger"><i>
+            <svg height="20" width="20">
+              <line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+              <line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+            </svg>
+          </i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">5</th>
+        <td>Probability</td>
+        <td class="grade">
+          <div class="custom-select">
+            <select onchange="calculate()" id="select" class="custom-select input" >
+              <option value="4">A+</option>
+              <option value="4">A</option>
+              <option value="3.75">A-</option>
+              <option value="3.5">B+</option>
+              <option value="3">B</option>
+              <option value="2.75">B-</option>
+              <option value="2.5">C+</option>
+              <option value="2">C</option>
+              <option value="1.75">C-</option>
+              <option value="1">D</option>
+              <option value="0">F</option>
+            </select>
+            <span class="custom-arrow"></span>
+          </div>  
+        </td>
+        <td class="credit">
+          <input id="score" placeholder="credit" oninput="calculate()"></input>
+        </td>
+        <td class="close-btn">
+          <button class="btn btn-danger"><i>
+            <svg height="20" width="20">
+              <line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+              <line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+            </svg>
+          </i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">6</th>
+        <td>Operating System</td>
+        <td class="grade">
+        <div class="custom-select">
+          <select onchange="calculate()" id="select" class="custom-select input" >
+            <option value="4">A+</option>
+            <option value="4">A</option>
+            <option value="3.75">A-</option>
+            <option value="3.5">B+</option>
+            <option value="3">B</option>
+            <option value="2.75">B-</option>
+            <option value="2.5">C+</option>
+            <option value="2">C</option>
+            <option value="1.75">C-</option>
+            <option value="1">D</option>
+            <option value="0">F</option>
+          </select>
+          <span class="custom-arrow"></span>
+        </div>
+      </td>
+        <td class="credit">
+          <input id="score" placeholder="credit" oninput="calculate()"></input>
+        </td>
+        <td class="close-btn">
+          <button class="btn btn-danger"><i>
+            <svg height="20" width="20">
+              <line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+              <line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4" />
+            </svg>
+          </i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+      <tr>
+        <th></th>
+        <td>Total</td>
+        <td id="grade-total"></td>
+        <td id="credit-total"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th></th>
+        <td>GPA</td>
+        <td></td>
+        <td id="gpa" style="border: 2px solid;"></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+</body>
+<script>
+  removeRow()
+  function removeRow(){
+    var closeBtns = document.getElementsByClassName("close-btn");
+    var i;
+
+    for (i = 0; i < closeBtns.length; i++) {
+      closeBtns[i].addEventListener("click", function() {
+        this.parentElement.remove();
+      });
+    }
+    //Run the calculate function so the remaining values will be updated 
+    calculate();
+  }
+
+  function addEntry(){
+    var number = calculate() + 1;
+    var courseName = document.getElementById("course-name").value;
+    var credit = document.getElementById("credit-input").value;
+    var selectedGrd = document.getElementById("grade-input");
+
+    //The spot where the new rows will be appended
+    var container = document.getElementsByTagName("tbody")[0];
+    //Creates the row
+    var newRow = document.createElement('tr');
+    
+    //Creates the header inside the row
+    var newHeader = document.createElement('th');
+    //Specify the inner contents and attributes of the header
+    newHeader.scope = "row";
+    newHeader.innerText = number;
+    
+    //Create a normal table data cell that'll show the course name
+    var newCourse = document.createElement('td');
+    //Specify the inner contents and attributes of the td
+    newCourse.innerText = courseName;
+
+    //Create a table data cell for the grade selection section
+    var newGrade = document.createElement('td');
+    //Specify the inner contents and attributes of the td
+    newGrade.className = "grade";
+    //Create a div inside the td
+    var newDiv = document.createElement('div');
+    //Specify class for the div
+    newDiv.className = "custom-select";
+    //Specify the inner HTML 
+    newDiv.innerHTML = '<select onchange="calculate()" id="select" class="custom-select input" ><option value="4">A+</option><option value="4">A</option><option value="3.75">A-</option><option value="3.5">B+</option><option value="3">B</option><option value="2.75">B-</option><option value="2.5">C+</option><option value="2">C</option><option value="1.75">C-</option><option value="1">D</option><option value="0">F</option></select><span class="custom-arrow"></span>';
+    newDiv.selectedIndex = selectedGrd.selectedIndex;
+    //Append the div to the td to make it its child element
+    newGrade.appendChild(newDiv);
+
+    //Create a td for credit input
+    var newCrdt = document.createElement("td");
+    //Specify class for the td
+    newCrdt.className = "credit";
+    //Create a td for credit input
+    var newInput = document.createElement("input");
+    //Specify id for the td
+    newInput.id = "score";
+    newInput.placeholder = "credit";
+    newInput.addEventListener("input", calculate);
+    newInput.value = credit;
+    //Specify the innerHTML
+    //newCrdt.innerHTML = '<input id="score" placeholder="credit" oninput="calculate()">';
+
+    //Append input to credit cell
+    newCrdt.appendChild(newInput);
+
+    //Create a td for close button
+    var newBtn = document.createElement("td");
+    //Specify class for the td
+    newBtn.className = "close-btn";
+    //Specify the innerHTML
+    newBtn.innerHTML = '<button class="btn btn-danger"><i><svg height="20" width="20"><line x1="5" y1="5" x2="15" y2="15" style="stroke:rgb(230, 255, 230);stroke-width:4"></line><line x1="5" y1="15" x2="15" y2="5" style="stroke:rgb(230, 255, 230);stroke-width:4"></line></svg></i></button>';
+
+
+    //Append the header, cell and select to the created row 
+    newRow.appendChild(newHeader);
+    newRow.appendChild(newCourse);
+    newRow.appendChild(newGrade);
+    newRow.appendChild(newCrdt);
+    newRow.appendChild(newBtn);
+
+    //Append all the elements to the container
+    container.appendChild(newRow);
+
+    //Run the remover function to activate the close button
+    removeRow();
+
+    //Run the calculate function so the new entry values will be updated 
+    calculate();
+  }
+
+  calculate()
+  function calculate(){
+    var scale = {"A+": 4.0, "A": 4.0, "A-": 3.75, "B+": 3.5, "B": 3.0, "B-": 2.75, "C+": 2.5, "C": 2, "C-": 1.75, "D": 1.5, "F": 0};
+    
+    //Output variables
+    var totalCrdtDisplay = document.getElementById("credit-total");
+    var totalGrdDisplay = document.getElementById("grade-total");
+    var gpaDisplay = document.getElementById("gpa");
+    
+    //Input variables
+    var grd = document.getElementsByClassName("custom-select input");
+    var crdt = document.getElementsByClassName("credit");
+    var inputLength = grd.length; 
+    var grdList = [inputLength];
+    var crdtList = [inputLength];
+    var scaledList = [inputLength];
+
+    var totalCrdt = 0, totalScaled = 0, avgGrd;
+    
+    let i;
+    for(i=0; i<inputLength; i++){
+      grdList[i] = parseFloat(grd[i].value);
+    }
+    console.log(grdList);
+
+    for(i=0; i<inputLength; i++){
+      crdtList[i] = parseInt(crdt[i].firstElementChild.value);
+      totalCrdt += crdtList[i];
+    }
+  
+    for(i=0; i<inputLength; i++){
+      totalScaled += grdList[i] * crdtList[i];
+    }
+    
+    let gpa = (totalScaled / totalCrdt).toFixed(2);
+    
+    //Using gpa to calculate estimated average grade
+    if(gpa >= 3.90){
+      avgGrd = "A+";
+    }else if(gpa >= 3.80 && gpa < 3.90){
+      avgGrd = "A";
+    }else if(gpa >= 3.70 && gpa < 3.80){
+      avgGrd = "A-";
+    }else if(gpa >= 3.40 && gpa < 3.70){
+      avgGrd = "B+";
+    }else if(gpa >= 2.90 && gpa < 3.40){
+      avgGrd = "B";
+    }else if(gpa >= 2.70 && gpa < 2.90){
+      avgGrd = "B-";
+    }else if(gpa >= 2.30 && gpa < 2.70){
+      avgGrd = "C+";
+    }else if(gpa >= 1.80 && gpa < 2.30){
+      avgGrd = "C";
+    }else if(gpa >= 1.70 && gpa < 1.80){
+      avgGrd = "C-";
+    }else if(gpa >= 1.50 && gpa < 1.70){
+      avgGrd = "D";
+    }else avgGrd = "F";
+
+    //DOMing the results
+    totalCrdtDisplay.innerText = totalCrdt;
+    totalGrdDisplay.innerText = avgGrd;
+    gpaDisplay.innerText = gpa;
+    
+    //Styling the results
+    totalCrdtDisplay.style.color = totalGrdDisplay.style.color = gpaDisplay.style.color = 'aqua';
+    gpaDisplay.style.fontWeight = 600;
+
+    return inputLength;
+  }
+</script>
+
+</html>
