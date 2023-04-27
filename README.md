@@ -4,6 +4,6 @@
 
 | Version 3     | Snapshots       | 
 | -------------- |-------------- |
-| ![App screenshot](./Version%203/GPA%20v3.02.png) | ![App screenshot](./public/Screenshots/Capture0.JPG) |
+| ![App screenshot](./Version%203/GPA%20v3.02.png) | ![App screenshot](./Version%203/GPA%20v3.png) |
 
 
