@@ -5,7 +5,7 @@ I plan to make a more enhanced version of this in the future.
 
 <h3>Live demo: </h3> https://codepen.io/beki-d/pen/BaqZYyp
 
-
+<h1></h3>
 
 | Version 3     | Snapshots       | 
 | -------------- |-------------- |
